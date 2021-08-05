@@ -5,3 +5,43 @@ body {
 .item {
     width: 2%;
 }
+
+.space {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#content {
+    margin: 0 auto;
+    width: 840px;
+}
+
+#page {
+    width: 100%
+}
+
+h3, h4 {
+    color: white;
+    text-align: center;
+    margin: 10px
+}
+
+button {
+    margin: 10px
+}
+
+#page {
+    text-align: center;
+}
+
+.icon {
+    width: 30px;
+    height: 35px;
+    margin: 0;
+    padding: 0;
+}
