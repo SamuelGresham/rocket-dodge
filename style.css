@@ -1,5 +1,7 @@
 body {
     background-color: #111111;
+    font-family: consolas;
+    overflow: hidden;
 }
 
 .item {
@@ -44,4 +46,32 @@ button {
     height: 35px;
     margin: 0;
     padding: 0;
+}
+
+#control_panel {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    padding: 20px;
+    margin: 25px;
+    color: white; 
+    text-align: left;
+    background-color: rgba(94, 0, 134, 0.5);
+}
+
+p {
+    margin: 0
+}
+
+#startbutton {
+    background-color: rgba(94, 0, 134, 0.5);
+    border: 0;
+    color: white;
+    font-size: 20pt;
+    padding: 10px;
+    margin: 0px
+}
+
+#startbutton:hover {
+    cursor: pointer;
 }
