@@ -190,8 +190,9 @@ function loop (timestamp) {
         // Do lots of things
         seed_asteroids();
         seed_fuel();
-        move_asteroids();
         move_fuels();
+        move_asteroids();
+        
     }
     clear();
     place_items();
