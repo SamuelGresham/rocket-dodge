@@ -21,6 +21,7 @@ body {
 #content {
     margin: 0 auto;
     width: 840px;
+    background-color: rgba(0,0,0,0.1);
 }
 
 #page {
@@ -42,10 +43,15 @@ button {
 }
 
 .icon {
-    width: 30px;
+    width: 35px;
     height: 35px;
     margin: 0;
     padding: 0;
+}
+
+.ship {
+    width: 45px;
+    height: 45px
 }
 
 #control_panel {

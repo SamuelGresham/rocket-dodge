@@ -1,8 +1,3 @@
-// Todo for next time 
-//  - Better art / interface design 
-//  - Designing / adding sound effects
-//  - Spacing out asteroids
-
 // Todo for me not streaming
 //  - Refine the maths behind level speed/asteroid density 
 
@@ -11,7 +6,7 @@ const NUM_ROWS = 19;
 const NUM_COLS = 19;
 
 // Sources for icon images
-const shipimg = "<img class='icon' src='./assets/rocket.png'>";
+const shipimg = "<img class='icon ship' src='./assets/rocket.png'>";
 const astimg = "<img class='icon' src='./assets/asteroid.png'>";
 const fuelimg = "<img class='icon' src='./assets/fuel.png'>";
 
@@ -30,7 +25,7 @@ game_data = {
 // Ship position data
 ship = {
     xpos: 9,
-    ypos: 16, 
+    ypos: NUM_ROWS - 3, 
     fuel: 100
 }
 
@@ -53,7 +48,7 @@ document.addEventListener("keydown", function (john) {
                 }
             }
         });
-    } else if (john.code == "ArrowRight" && ship.xpos < 18) {
+    } else if (john.code == "ArrowRight" && ship.xpos < (NUM_COLS - 1)) {
         ship.xpos += 1;
         fuels.forEach((element, i) => {
             if (ship.xpos == element.xpos && ship.ypos == element.ypos) {
@@ -168,6 +163,9 @@ function loop (timestamp) {
     // Level up
     if (frame > game_data.level*1000) {
         game_data.level++;
+        var l_up_audio = new Audio('./assets/level-up.mp4');
+        l_up_audio.play();
+        
     }
 
     if (timestamp && (timestamp - game_data.last_frame_run > (500/game_data.level) || game_data.started == 0)) {
@@ -200,7 +198,13 @@ function loop (timestamp) {
         window.requestAnimationFrame(loop);
         document.getElementById("current_score").innerHTML = "Current Score: " + game_data.score;
     } else {
-        document.getElementById("title").innerHTML = "You lost, loser!";
+        var die_audio = new Audio('./assets/lost.mp4');
+        die_audio.play()
+        if (ship.fuel > 0) {
+            document.getElementById("title").innerHTML = "You crashed!";
+        } else {
+            document.getElementById("title").innerHTML = "You ran out of fuel!";
+        }
         document.getElementById("title").style = "color: red;";
         const prev = localStorage.getItem("rocketdodge_highscore");
 
@@ -221,7 +225,7 @@ function move_asteroids () {
                 game_data.lost = 1;
             }
 
-            if (asteroids[i].ypos > 18) {
+            if (asteroids[i].ypos > (NUM_ROWS - 1)) {
                 asteroids.splice(i,1);
                 game_data.score++;
             }
@@ -235,6 +239,8 @@ function move_fuels () {
         fuels[i].ypos++; 
             
         if (fuels[i].ypos == ship.ypos && fuels[i].xpos == ship.xpos) {
+            var refuel_audio = new Audio('./assets/refuel_2.mp4');
+            refuel_audio.play()
             ship.fuel += 20;
             fuels.splice(i,1);
 
@@ -243,7 +249,7 @@ function move_fuels () {
             }
         }
 
-        if (fuels[i] && fuels[i].ypos > 18) {
+        if (fuels[i] && fuels[i].ypos > (NUM_ROWS - 1)) {
             fuels.splice(i,1);
         }
     }
@@ -253,7 +259,7 @@ function seed_asteroids() {
     var num = Math.random();
 
     if (num > (0.5 - game_data.level/75)) {
-        var col = Math.floor(Math.random()*19);
+        var col = Math.floor(Math.random()*NUM_COLS);
         var temp = {
             ypos: 0,
             xpos: col,
@@ -266,18 +272,21 @@ function seed_asteroids() {
 function seed_fuel () {
     var num = Math.random();
 
-    if (num > (0.95 - game_data.level/75)) {
-        var col = Math.floor(Math.random()*19);
+    if (num > (0.95 - game_data.level/75) || ship.fuel == 20) {
+        var col = Math.floor(Math.random()*NUM_COLS);
+        var cont = 1;
         asteroids.forEach(element => {
             if (element.xpos == col && element.ypos < 3) {
-                return;
+                cont = 0;
             }
-        })
-        var temp = {
-            ypos: 0,
-            xpos: col,
-            velocity: 1
+        });
+        if (cont) {
+            var temp = {
+                ypos: 0,
+                xpos: col,
+                velocity: 1
+            }
+            fuels.push(temp);
         }
-        fuels.push(temp);
     }
 }
