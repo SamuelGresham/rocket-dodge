@@ -1,9 +1,15 @@
-// Todo for me not streaming
-//  - Refine the maths behind level speed/asteroid density 
-
 // Size of the gameboard
-const NUM_ROWS = 19;
+var NUM_ROWS = 15;
 const NUM_COLS = 19;
+
+var window_height = window.innerHeight;
+NUM_ROWS = Math.floor(window_height/ 50)
+
+window.onresize = function () {
+    var window_height = window.innerHeight;
+    console.log("Resized to " + window_height)
+    NUM_ROWS = Math.floor(window_height/ 50)
+}
 
 // Sources for icon images
 const shipimg = "<img class='icon ship' src='./assets/rocket.png'>";
@@ -36,7 +42,7 @@ fuels = [];
 
 // Event listener for keydown events
 document.addEventListener("keydown", function (john) {
-    if (john.code == "ArrowLeft" && ship.xpos > 0) {
+    if ((john.code == "ArrowLeft" || john.code == "KeyA") && ship.xpos > 0) {
         ship.xpos += -1;
         fuels.forEach((element, i) => {
             if (ship.xpos == element.xpos && ship.ypos == element.ypos) {
@@ -48,7 +54,8 @@ document.addEventListener("keydown", function (john) {
                 }
             }
         });
-    } else if (john.code == "ArrowRight" && ship.xpos < (NUM_COLS - 1)) {
+    } else if ((john.code == "ArrowRight" || john.code == "KeyD") && ship.xpos < (NUM_COLS - 1)) {
+        
         ship.xpos += 1;
         fuels.forEach((element, i) => {
             if (ship.xpos == element.xpos && ship.ypos == element.ypos) {
@@ -143,7 +150,7 @@ function start_button_press () {
         // Ship position data
         ship = {
             xpos: 9,
-            ypos: 16, 
+            ypos: NUM_ROWS - 3, 
             fuel: 100
         }
 
