@@ -186,6 +186,12 @@ function loop (timestamp) {
         } 
         
         if (ship.fuel <= 20) {
+            if (ship.fuel == 20) {
+                var a1 = new Audio("./assets/fuel-low.mp4")
+                var a2 = new Audio("./assets/fuel-low.mp3")
+                a1.play()
+                a2.play()
+            }
             document.getElementById("fuel").style = "color: red;"
         } else {
             document.getElementById("fuel").style = "color: white;"
