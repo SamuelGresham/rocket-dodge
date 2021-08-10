@@ -48,20 +48,22 @@ document.addEventListener("keydown", function (john) {
             if (ship.xpos == element.xpos && ship.ypos == element.ypos) {
                 ship.fuel += 20;
                 fuels.splice(i,1);
-
+                var refuel_audio = new Audio('./assets/refuel_2.mp4');
+                refuel_audio.play()
                 if (ship.fuel > 100) {
                     ship.fuel = 100;
                 }
             }
         });
     } else if ((john.code == "ArrowRight" || john.code == "KeyD") && ship.xpos < (NUM_COLS - 1)) {
-        
+
         ship.xpos += 1;
         fuels.forEach((element, i) => {
             if (ship.xpos == element.xpos && ship.ypos == element.ypos) {
                 ship.fuel += 20;
                 fuels.splice(i,1);
-
+                var refuel_audio = new Audio('./assets/refuel_2.mp4');
+                refuel_audio.play()
                 if (ship.fuel > 100) {
                     ship.fuel = 100;
                 }
