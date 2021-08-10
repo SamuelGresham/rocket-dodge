@@ -81,3 +81,19 @@ p {
 #startbutton:hover {
     cursor: pointer;
 }
+
+#vers {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 25px;
+    color: white
+}
+
+a {
+    color: rgba(94, 0, 134, 1);
+}
+
+p, b{
+    color: white;
+}
