@@ -47,11 +47,12 @@ button {
     height: 35px;
     margin: 0;
     padding: 0;
+    position: absolute;
 }
 
 .ship {
-    width: 45px;
-    height: 45px
+    width: 35px;
+    height: 35px
 }
 
 #control_panel {

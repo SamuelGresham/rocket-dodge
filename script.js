@@ -21,6 +21,11 @@ window.onresize = function () {
 const shipimg = "<img class='icon ship' src='./assets/rocket.png'>";
 const astimg = "<img class='icon' src='./assets/asteroid.png'>";
 const fuelimg = "<img class='icon' src='./assets/fuel.png'>";
+const debrisimg1 = "<img class='icon' src='./assets/debris-1.png'>"
+const debrisimg2 = "<img class='icon' src='./assets/debris-2.png'>"
+const debrisimg3 = "<img class='icon' src='./assets/debris-3.png'>"
+const debrisimg4 = "<img class='icon' src='./assets/debris-4.png'>"
+
 
 // Set the current frame to 0
 frame = 0;
@@ -44,6 +49,8 @@ ship = {
 // List of asteroids
 asteroids = [];
 
+debris = [];
+
 fuels = [];
 
 // Event listener for keydown events
@@ -62,7 +69,6 @@ document.addEventListener("keydown", function (john) {
             }
         });
     } else if ((john.code == "ArrowRight" || john.code == "KeyD") && ship.xpos < (NUM_COLS - 1)) {
-
         ship.xpos += 1;
         fuels.forEach((element, i) => {
             if (ship.xpos == element.xpos && ship.ypos == element.ypos) {
@@ -121,14 +127,32 @@ function place_items () {
 
     for (let i = 0; i < asteroids.length; i++) {
         if (asteroids[i].ypos != undefined && asteroids[i].ypos != null) {
-            document.getElementById(asteroids[i].ypos + "," + asteroids[i].xpos).innerHTML = astimg;
+            document.getElementById(asteroids[i].ypos + "," + asteroids[i].xpos).innerHTML += astimg;
         }
     }
 
     for (let i = 0; i < fuels.length; i++) {
         if (fuels[i].ypos != undefined) {
-            document.getElementById(fuels[i].ypos + "," + fuels[i].xpos).innerHTML = fuelimg;
+            document.getElementById(fuels[i].ypos + "," + fuels[i].xpos).innerHTML += fuelimg;
         }
+    }
+
+    try {
+        for (let i = 0; i < debris.length; i++) {
+            if (debris[i].ypos != undefined && debris[i].type == 1 && debris[i].ypos < NUM_ROWS - 1 && debris[i].xpos < NUM_COLS - 1) {
+                document.getElementById(debris[i].ypos + "," + debris[i].xpos).innerHTML += debrisimg1;
+            } else if (debris[i].ypos != undefined && debris[i].type == 2 && debris[i].ypos < NUM_ROWS - 1 && debris[i].xpos < NUM_COLS - 1) {
+                document.getElementById(debris[i].ypos + "," + debris[i].xpos).innerHTML += debrisimg2;
+            } else if (debris[i].ypos != undefined && debris[i].type == 3 && debris[i].ypos < NUM_ROWS - 1 && debris[i].xpos < NUM_COLS - 1) {
+                document.getElementById(debris[i].ypos + "," + debris[i].xpos).innerHTML += debrisimg3;
+            } else if (debris[i].ypos != undefined && debris[i].type == 4 && debris[i].ypos < NUM_ROWS - 1 && debris[i].xpos < NUM_COLS - 1) {
+                document.getElementById(debris[i].ypos + "," + debris[i].xpos).innerHTML += debrisimg4;
+            } else {
+                console.warn("Sam, something bad happened maybe fix it.")
+            }
+        }
+    } catch (err) {
+        console.warn(err.message);
     }
 
     document.getElementById("level").innerHTML = "Level " + game_data.level;
@@ -209,13 +233,19 @@ function loop (timestamp) {
         
         // Do lots of things
         seed_asteroids();
+        seed_debris();
         seed_fuel();
         move_fuels();
         move_asteroids();
+        move_debris();
         
     }
     clear();
-    place_items();
+    //try {
+        place_items();
+    //} catch (error) {
+    //    console.error("Sam u idiot: " + error.message)
+    //}
     if (!game_data.lost) {
         window.requestAnimationFrame(loop);
         document.getElementById("current_score").innerHTML = "Current Score: " + game_data.score;
@@ -258,6 +288,7 @@ function move_asteroids () {
 function collisionCheck () {
     asteroids.forEach(asteroid => {
         if (asteroid.xpos == ship.xpos && asteroid.ypos == ship.ypos) {
+            console.log("Player collided with object at (x,y): " +  ship.xpos + " " + ship.ypos);
             game_data.lost = 1;
         }
     });
@@ -299,6 +330,43 @@ function seed_asteroids() {
     }
 }
 
+function seed_debris () {
+    var num = Math.random();
+
+    if (num > (0.95 - game_data.level/100)) {
+        var col = Math.floor(Math.random()*NUM_COLS - 1);
+        var temp1 = {
+            ypos: 0,
+            xpos: col,
+            velocity: 1, 
+            type: Math.ceil(Math.random()*4)
+        }
+        var temp2 = {
+            ypos: 0,
+            xpos: col + 1,
+            velocity: 1,
+            type: Math.ceil(Math.random()*4)
+        }
+        var temp3 = {
+            ypos: 1,
+            xpos: col,
+            velocity: 1,
+            type: Math.ceil(Math.random()*4)
+        }
+        var temp4 = {
+            ypos: 1,
+            xpos: col + 1,
+            velocity: 1,
+            type: Math.ceil(Math.random()*4)
+        }
+        debris.push(temp1);
+        debris.push(temp2);
+        debris.push(temp3);
+        debris.push(temp4);
+        console.log(debris)
+    }
+}
+
 function seed_fuel () {
     var num = Math.random();
 
@@ -317,6 +385,27 @@ function seed_fuel () {
                 velocity: 1
             }
             fuels.push(temp);
+        }
+    }
+}
+
+function move_debris () {
+    for (i = debris.length - 1; i >= 0; i--) {
+        debris[i].ypos++;
+
+        if (debris[i].xpos == ship.xpos && debris[i].ypos == ship.ypos) {
+            if (ship.fuel < 30 && ship.fuel > 20) {
+                var a1 = new Audio("./assets/fuel-low.mp4")
+                var a2 = new Audio("./assets/fuel-low.mp3")
+                a1.play()
+                a2.play()
+            }
+            ship.fuel += -10;
+            
+        }
+
+        if (debris[i] && debris[i].ypos > (NUM_ROWS - 1)) {
+            debris.splice(i,1);
         }
     }
 }
