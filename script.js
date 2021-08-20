@@ -6,6 +6,7 @@ new Audio('./assets/level-up.mp4');
 new Audio('./assets/refuel_2.mp4');
 new Audio("./assets/fuel-low.mp4");
 new Audio("./assets/fuel-low.mp3");
+new Audio('./assets/lost.mp4');
 
 var window_height = window.innerHeight;
 NUM_ROWS = Math.floor(window_height/ 50)
