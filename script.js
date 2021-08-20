@@ -2,6 +2,11 @@
 var NUM_ROWS = 15;
 const NUM_COLS = 19;
 
+new Audio('./assets/level-up.mp4');
+new Audio('./assets/refuel_2.mp4');
+new Audio("./assets/fuel-low.mp4");
+new Audio("./assets/fuel-low.mp3");
+
 var window_height = window.innerHeight;
 NUM_ROWS = Math.floor(window_height/ 50)
 
