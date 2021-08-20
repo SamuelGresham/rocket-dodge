@@ -76,6 +76,7 @@ document.addEventListener("keydown", function (john) {
             }
         });
     }
+    collisionCheck();
 })
 
 // Run when the page has loaded
@@ -252,6 +253,14 @@ function move_asteroids () {
             }
         }
     }
+}
+
+function collisionCheck () {
+    asteroids.forEach(asteroid => {
+        if (asteroid.xpos == ship.xpos && asteroid.ypos == ship.ypos) {
+            game_data.lost = 1;
+        }
+    });
 }
 
 function move_fuels () {
